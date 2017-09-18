@@ -38,7 +38,7 @@ const store = new Vuex.Store({
   mutations: {
     SET_FRUITS(state, fruits){
       console.log(state);
-      console.log(fruits.data);
+      console.log(fruits);
       // having an object instead of an array makes the other methods easier
       // since we can use Vue.set() and Vue.delete()
       // const object = {};
@@ -49,7 +49,7 @@ const store = new Vuex.Store({
       // state.register = fruits
       // console.log(state);
     },
-    ADD_FRUIT(state, fruit){
+    ADD_USERS(state, fruit){
       Vue.set(state.fruits, fruit.id, fruit);
     },
     UPDATE_FRUIT(state, fruit){
@@ -64,22 +64,59 @@ const store = new Vuex.Store({
       apolloClient.query({
         query: gql`
           {
-            users {
-              data {
-                name
-                user_profiles{
-                  avatar
-                }
-              }
-              total
-              per_page
+            mypost {
+              id
+              title
             }
           }
         `
       }).then((result) => {
-        // console.log(result);
-        context.commit('SET_FRUITS', result.data.users);
+        console.log(result);
+        context.commit('SET_FRUITS', result);
       });
+    },
+    addUser(context, data) {
+      const register = data
+      apolloClient.mutate({
+        // Query
+        /*
+        mutation: gql`mutation createMyPost ($userId: Int!, $title: String!, $body: String!) {
+          createMyPost (userId: $userId, title: $title, body: $body){
+            id
+          } 
+        }`,
+        */
+        
+        mutation: gql` mutation NewUser ($name: String, $email: String, $password: String) { 
+          newUser(name: $name, email: $email, password: $password, first_name: "first_name", last_name: "last name") {
+            id
+            name
+            email
+          }
+        
+        }`,
+        
+        // Parameters
+        // variables: {
+        //   userId: 1,
+        //   title: register.email,
+        //   body: register.password,
+        // }
+        variables: {
+          name: "tstdfasf",
+          email: register.email,
+          password: register.password,
+        }
+      }).then((data) => {
+        // Result
+        console.log('result');
+        console.log(data)
+      }).catch((error) => {
+        // Error
+        console.error(error)
+        // We restore the initial user input
+        // this.newTag = newTag
+      })
     }
     // You call this action to start the sunscription
     // subscribeToFruits(context){

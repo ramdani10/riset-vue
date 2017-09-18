@@ -20,7 +20,9 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <input type="text" v-model="register.name" id="name" class="form-control input-sm" placeholder="Name">
+                            </div>
                             <div class="row">
                                 <div class="col-xs-6 col-sm-6 col-md-6">
                                     <div class="form-group">
@@ -73,9 +75,6 @@
                             <p>
                                 <router-link to="/login">Log In</router-link>
                             </p>
-                            <!-- <ul v-if="fruits">
-                              <li v-for="fruit in fruits">{{fruit.name}} <em v-if="fruit.color">{{fruit.color.name}}</em></li>
-                          </ul> -->
                         </form>
                     </div>
                 </div>
@@ -94,7 +93,7 @@ export default {
   name: 'app',
   data(){
     return {
-      subscribed: false,
+      // subscribed: false,
       register: {},
       loading: false,
       fruits: {}
@@ -114,16 +113,18 @@ export default {
   // },
   created(){
     this.fruits = store.dispatch('getFruits')
+    console.log('masuk sini');
     console.log(this.fruits)
   },
   destroyed(){
-    if (this.subscribed) store.dispatch('unsubscribeFromFruits')
+    // if (this.subscribed) store.dispatch('unsubscribeFromFruits')
   },
   methods: {
     onSubmit(){
-      this.subscribed = !this.subscribed
-      if(!this.subscribed) store.dispatch('getFruits')
-      else store.dispatch('getFruits')
+      // this.subscribed = !this.subscribed
+      // if(!this.subscribed) store.dispatch('getFruits')
+      // else store.dispatch('getFruits')
+      store.dispatch('addUser', this.register)
     }
   }
 }
