@@ -25,3 +25,12 @@ npm test
 ```
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+
+
+http://git.smooets.com/smooets/CleanGo-Frontend
+http://git.smooets.com/smooets/CleanGo-Backend
+http://git.smooets.com/smooets/CleanGo-Android
+@Dian @Ajid
+Staging URL buat FE:
+http://cleango.stagingapps.net
+ssh : cleango-dev@202.138.229.148

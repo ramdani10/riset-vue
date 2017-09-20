@@ -1,205 +1,133 @@
-// import Vue from 'vue'
-// import Vuex from 'vuex'
-// import * as actions from './actions'
-// import auth from './modules/auth'
-// import apolloClient from '../apollo/index.js'
-// import gql from 'graphql-tag'
-import apolloClient from '../../apollo/index.js'
-import gql from 'graphql-tag'
-
 /* eslint-disable */
+import Vue from 'vue'
+import Vuex from 'vuex'
+import Toasted from 'vue-toasted'
+import apolloClient from '../../apollo/index.js'
+import router from '../../router'
+import gql from 'graphql-tag'
+import { ApiHttp } from './../../helpers/http_services'
+import { authenticated, storeUserToken } from './../../helpers/auth_services'
 
-// import Vue from 'vue'
-// import { indexOf } from 'lodash'
-// import { ApiHttp } from './../../shared/http-service'
-// import { storeUserToken, destroyUserToken, hasValidUser, getUser } from './../../shared/auth-service'
-// import { REGISTER, DEBUG } from '../../env/index'
+Vue.use(Vuex);
+Vue.use(Toasted)
 
-const state = {
-  authUser: 'testing',
-  count: 1
-  // loadingBar: false,
-  // authenticated: false
-}
-
-const fruitsSubscriptionObservable = apolloClient.subscribe({
-  query: gql`
-    subscription {
-      Fruit {
-        mutation
-        node {
-          id
-          name
-          color {
+const store = new Vuex.Store({
+  state: {
+    register: {},
+  },
+  register: {},
+  mutations: {
+    GET_USERS(state, fruits){
+      console.log(state);
+      console.log(fruits);
+    },
+    ADD_USERS(state, fruit){
+      Vue.set(state.fruits, fruit.id, fruit);
+    },
+    CHECK_AUTHENTICATED(state, user)
+    {
+      this.state.token = user.token
+    }
+  },
+  actions: {
+    getFruits(context){
+      apolloClient.query({
+        query: gql`
+          {
+            users {
+              email
+            }
+          }
+        `
+      }).then((result) => {
+        console.log(result);
+        context.commit('GET_USERS', result);
+      });
+    },
+    checkAutenticated() {
+      console.log(authenticated())
+    },
+    addUser(context, data) {
+      this.register = data
+      apolloClient.mutate({
+        // Query
+        mutation: gql` mutation NewUser ($avatar: String!, $name: String!, $email: String!, $password: String!, $first_name: String!, $last_name: String!) { 
+          newUser(avatar: $avatar, name: $name, email: $email, password: $password, first_name: $first_name, last_name: $last_name) {
+            id
             name
+            email
+            user_profiles{
+              avatar
+              first_name
+              last_name
+            }
           }
+        
+        }`,
+        variables: {
+          name: this.register.first_name+' '+this.register.last_name,
+          email: this.register.email,
+          password: this.register.password,
+          first_name: this.register.first_name,
+          last_name: this.register.last_name,
+          avatar: 'http://lorempixel.com/640/480/?62970'
         }
-        previousValues {
-          id
-          }
-      }
-    }
-  `
-})
-
-let fruitsSubscriptionObserver
-
-const getters = {
-  // loadingBar: state => state.loadingBar,
-  // authenticated: state => state.authenticated,
-  // userData: state => getUser()
-}
-
-/*
-const mutations = {
-  authUser (state, {username, token}) {
-    state.authUser = {
-      username: username,
-      token: token
-    }
-  },
-  loadingBar (state, status) {
-    state.loadingBar = status
-    // if (status) {
-    //   Loading.show({delay:0})
-    // } else {
-    //   Loading.hide({delay:0})
-    // }
-  },
-  setAuthenticated (state, status) {
-    state.authenticated = status
-  }
-}
-
-*/
-
-const actions = {
-  registerNewUser ({commit}, payload) {
-    console.log(fruitsSubscriptionObservable)
-    // return payload
-    // return ApiHttp.post(REGISTER(), payload)
-    fruitsSubscriptionObserver = fruitsSubscriptionObserver.subscribe({
-       next (data){
-        console.log(data)
-        // mutation will say the type of GraphQL mutation `CREATED`, `UPDATED` or `DELETED`
-        console.log(data.Fruit.mutation)
-        // node is the actual data of the result of the GraphQL mutation
-        console.log(data.Fruit)
-        // then call your store mutation as usual
-        // switch (data.Fruit.mutation) {
-        //   case 'CREATED':
-        //     context.commit('ADD_FRUIT', data.Fruit.node);
-        //     break;
-        //   case 'UPDATED':
-        //     context.commit('UPDATE_FRUIT', data.Fruit.node);
-        //     break;
-        //   case 'DELETED':
-        //     context.commit('DELETE_FRUIT', data.Fruit.previousValues);
-        //     break;
-        // }
-      },
-      error(error){
-        console.log(error)
-      }
-    })
-  }
-  /*
-  authenticate ({ commit }, payload) {
-    commit('loadingBar', true)
-    const { username, password } = payload.auth
-    const credentials = {}
-    ApiHttp.post(`/login?username=${username}&password=${password}`)
+      }).then((data) => {
+        router.push('/login')
+        context.commit('showToash',{message: 'Register has been successfuly, Please login with your account',type: 'success'})
+        // Vue.toasted.global.success({message: 'Register has been successfuly, Please login with your account'}).goAway(3000)
+      }).catch((error) => {
+        const errorMessage = JSON.parse(JSON.stringify(error))
+        Vue.toasted.global.error({message: errorMessage.graphQLErrors[0].message}).goAway(3000)
+        this.register = this.register
+      })
+    },
+    login(context, data) {
+      ApiHttp.post(`/auth/signin`,
+        data
+      )
       .then((response) => {
-        credentials.token = response.data.token
-        credentials._id = response.data._id
-        return ApiHttp.get(`/user/${credentials._id}`, {
-          headers: {
-            'token': credentials.token
-          }
-        })
-      }).then((response) => {
-        credentials.username = `${response.data.first_name} ${response.data.last_name}`
-        credentials.email = response.data.email
-        storeUserToken(credentials)
-        commit('setAuthenticated', true)
-        commit('loadingBar', false)
-        payload.router.push('/intro')
-        Vue.toasted.global.success({message: 'Success For Login'}).goAway(3000)
+        console.log(response)
+        storeUserToken(response.data);
+        router.push('/')
+        context.dispatch('showToash',{message: 'Register has been successfuly, Please login with your account',type: 'success'})
+        // Vue.toasted.global.success({message: 'Login has been successfuly'}).goAway(3000)
       })
       .catch((error) => {
         var message = ''
 
         if (error.response) {
           let data = error.response.data
-
-          if (data.errors[0].ERR_CODE === 'E109') {
-            message = 'Oops.. Username or Password May be wrong'
-          }
+          console.log(data.error);
+          message = 'Oops.. '+data.error
         }
 
-        commit('loadingBar', false)
-        Vue.toasted.error(message).goAway(3000)
+        Vue.toasted.global.error({message: message}).goAway(3000)
       })
-  },
-  authLogout ({ commit }, payload) {
-    destroyUserToken()
-    commit('setAuthenticated', false)
-    payload.push('/login')
-  },
-  authUserDetect ({ commit }) {
-    if (hasValidUser()) {
-      commit('setAuthenticated', true)
-    }
-  },
-  loadingBar ({ commit }, payload) {
-    commit('loadingBar', payload)
-  },
-  setAuthenticated ({ commit }, payload) {
-    commit('setAuthenticated', payload)
-  },
-  removeUserToken ({ commit, dispatch }, router) {
-    commit('setAuthenticated', false)
-    dispatch('showToash', { message: 'Session expired', type: 'error' })
-    destroyUserToken()
+    },
+    signUp(context, data) {
+      ApiHttp.post(`/auth/signup`,
+        data
+      )
+      .then((response) => {
+        console.log(response)
+        storeUserToken(response.data);
+        router.push('/')
+        Vue.toasted.global.success({message: 'SignUp has been successfuly'}).goAway(3000)
+      })
+      .catch((error) => {
+        var message = ''
 
-    if (router) {
-      router.push('/login')
-    }
-  },
-  handleErrorResponse ({ commit, dispatch }, payload) {
-    if (payload.errors.response) {
-      let response = payload.errors.response.data.error || payload.errors.response.data.errors
-      let errorTypes = ['TOKEN_EXPIRATION_ERROR', 'INVALID_TOKEN_ERROR']
+        if (error.response) {
+          let data = error.response.data
+          console.log(data.error);
+          message = 'Oops.. '+data.error
+        }
 
-      if (indexOf(errorTypes, response.ERROR_CODE) !== -1) {
-        dispatch('removeUserToken', payload.router)
-      }
-      else {
-        dispatch('showToash', { message: response.ERROR_DESCRIPTION, type: 'error' })
-      }
-    }
-    else {
-      let errorMessage
-
-      if (DEBUG) {
-        errorMessage = payload.errors
-      }
-      else {
-        errorMessage = 'Oops! something may be wrong'
-      }
-
-      dispatch('showToash', { message: errorMessage, type: 'error' })
+        Vue.toasted.global.error({message: message}).goAway(3000)
+      })
     }
   }
-  */
-}
+});
 
-export default {
-  state,
-  getters,
-  apolloClient,
-  gql,
-  fruitsSubscriptionObserver,
-  // mutations,
-  actions
-}
+export default store;

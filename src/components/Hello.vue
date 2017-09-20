@@ -1,32 +1,76 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <ul>
-      <li><button><router-link to="/login">Log In</router-link></button></li>
-      <li><button><router-link to="/register">Register</router-link></button></li>
-      <!-- <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li> -->
-      <!-- <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li> -->
-    </ul>
-<!--     <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul> -->
+  <div>
+    <b-carousel id="carousel1"
+                style="text-shadow: 1px 1px 2px #333;"
+                controls
+                indicators
+                background="#ababab"
+                :interval="4000"
+                img-width="1024"
+                img-height="480"
+                v-model="slide"
+                @sliding-start="onSlideStart"
+                @sliding-end="onSlideEnd"
+    >
+
+      <!-- Text slides with image -->
+      <b-carousel-slide caption="First slide"
+                        text="Nulla vitae elit libero, a pharetra augue mollis interdum."
+                        img-src="https://lorempixel.com/1024/480/technics/2/"
+      ></b-carousel-slide>
+
+      <!-- Slides with custom text -->
+      <b-carousel-slide img-src="https://lorempixel.com/1024/480/technics/4/">
+        <h1>Hello world!</h1>
+      </b-carousel-slide>
+
+      <!-- Slides with image only -->
+      <b-carousel-slide img-src="https://lorempixel.com/1024/480/technics/8/">
+      </b-carousel-slide>
+
+      <!-- Slides with img slot -->
+      <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
+      <b-carousel-slide>
+        <img slot="img" class="d-block img-fluid w-100" width="1024" height="480"
+             src="https://lorempixel.com/1024/480/technics/5/" alt="image slot">
+      </b-carousel-slide>
+
+      <!-- Slide with blank fluid image to maintain slide aspect ratio -->
+      <b-carousel-slide caption="Blank Image" img-blank img-alt="Blank image">
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
+          eros felis, tincidunt a tincidunt eget, convallis vel est. Ut pellentesque
+          ut lacus vel interdum.
+        </p>
+      </b-carousel-slide>
+    </b-carousel>
   </div>
 </template>
 
 <script>
+/* eslint-disable*/
+
+import store from '../store/modules/auth.js';
+
 export default {
   name: 'hello',
   data () {
     return {
+      slide: 0,
+      sliding: null, 
       msg: 'Welcome to Clean & Go App'
+    }
+  },
+  created(){
+    // console.log('test');
+    // store.dispatch('checkAutenticated')
+  },
+  methods: {
+    onSlideStart(slide) {
+        this.sliding = true;
+    },
+    onSlideEnd(slide) {
+        this.sliding = false;
     }
   }
 }

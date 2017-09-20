@@ -10,7 +10,7 @@ import gql from 'graphql-tag'
 // import books from './modules/books'
 // import eplatform from './modules/eplatform'
 // import media from './modules/media'
-// import toashManager from './modules/toash-manager'
+import toashManager from './modules/toast_manager'
 // import createLogger from '../plugins/logger'
 // import shared from './modules/shared'
 
@@ -23,14 +23,14 @@ export default new Vuex.Store({
   apolloClient,
   gql,
   modules: {
-    auth
+    auth,
+    toashManager
     // books,
     // eplatform,
     // page,
     // organization,
     // auth,
     // media,
-    // toashManager,
     // writes,
     // shared
   }

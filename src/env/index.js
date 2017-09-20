@@ -1,5 +1,5 @@
 // define main url to the API end point
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'https://private-ee7cbe-cleanngo.apiary-mock.com'
 const API_BASE_GRAPHQL = 'http://127.0.0.1:8000/graphql/query'
 
 // create function for build url base on payload or query params

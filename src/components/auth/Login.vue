@@ -1,7 +1,7 @@
 <template>
-    <div class="container">
-        <div class="row centered-form">
-        <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
+    <div class="container" align="center">
+        <div class="row">
+          <div class="col-xs-12 col-sm-8 col-md-4  col-sm-offset-2 col-md-offset-4">
             <div class="panel panel-default">
                 <div class="panel-heading">
                         <h3 class="panel-title">Sign In <small></small></h3>
@@ -32,13 +32,12 @@
 <script>
 /* eslint-disable */
 
-import store from '../../store/modules/auth.js';
+import { mapActions } from 'vuex'
 
 export default {
   name: 'login',
   data(){
     return {
-      // subscribed: false,
       register: {},
       loading: false,
     }
@@ -57,19 +56,24 @@ export default {
   // },
   created(){
     // console.log('test');
-    store.dispatch('checkAutenticated')
+    // store.dispatch('checkAutenticated')
   },
   destroyed(){
     // if (this.subscribed) store.dispatch('unsubscribeFromFruits')
   },
   methods: {
-    onSubmit(){
-      // this.subscribed = !this.subscribed
-      // if(!this.subscribed) store.dispatch('getFruits')
-      // else store.dispatch('getFruits')
-      store.dispatch('login', this.register)
+      ...mapActions(['login']),
+      onSubmit(){
+        this.loading = true
+        this.login(this.register)
+      }
     }
-  }
+  // methods: {
+  //   onSubmit(){
+  //     this.loading = true
+  //     store.dispatch('login', this.register)
+  //   }
+  // }
 }
 </script>
 

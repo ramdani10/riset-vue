@@ -51,25 +51,11 @@ Vue.toasted.register('success',
         }
 		
         // if there is a message show it with the message
-        return "Oops.. " + payload.message;
+        return payload.message;
     },{
     type: 'success'	
     }    
 )
-
-// Create the apollo client
-// const apolloClient = new ApolloClient({
-//   networkInterface: createNetworkInterface({
-//     uri: 'http://localhost:8080/graphql',
-//     transportBatching: true,
-//   }),
-//   queryTransformer: addTypename,
-//   dataIdFromObject: r => r.id,
-// });
-
-// Install the vue plugin
-// With the apollo client instance
-
 
 new Vue({
   el: '#app',

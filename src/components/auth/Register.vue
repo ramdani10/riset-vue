@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" align="center">
         <div class="row centered-form">
         <div class="col-xs-12 col-sm-8 col-md-4 col-sm-offset-2 col-md-offset-4">
             <div class="panel panel-default">
@@ -84,7 +84,8 @@
 <script>
 /* eslint-disable */
 
-import store from '../../store/modules/auth.js';
+// import store from '../../store/modules/auth.js';
+import { mapActions } from 'vuex'
 
 export default {
   name: 'app',
@@ -92,8 +93,7 @@ export default {
     return {
       // subscribed: false,
       register: {},
-      loading: false,
-      fruits: {}
+      loading: false
     }
   },
   // ,
@@ -109,19 +109,18 @@ export default {
   //   }
   // },
   created(){
-    this.fruits = store.dispatch('getFruits')
-    console.log('masuk sini');
-    console.log(this.fruits)
+    // this.fruits = store.dispatch('getFruits')
+    // console.log(this.fruits)
   },
   destroyed(){
     // if (this.subscribed) store.dispatch('unsubscribeFromFruits')
   },
   methods: {
+    ...mapActions(['signUp']),
     onSubmit(){
-      // this.subscribed = !this.subscribed
-      // if(!this.subscribed) store.dispatch('getFruits')
-      // else store.dispatch('getFruits')
-      store.dispatch('addUser', this.register)
+      this.loading = true
+      // store.dispatch('signUp', this.register)
+      this.signUp(this.register)
     }
   }
 }

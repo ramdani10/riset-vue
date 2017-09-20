@@ -1,15 +1,15 @@
 /* eslint-disable */
 // import { isJson } from './helpers'
 // import store from './../store'
-const KEY_USER = 'token'
+import router from '../router'
+const KEY_USER = 'user'
 
 export const authenticated = (to, from, next) => {
   if (hasValidUser()) {
     return hasValidUser()
   }
 
-  // store.commit('setAuthenticated', false)
-  return next('/login')
+  router.push('/login')
 }
 
 export const guest = (to, from, next) => {
@@ -21,8 +21,9 @@ export const guest = (to, from, next) => {
 }
 
 export const hasValidUser = () => {
-  return user() 
+  // return user() 
   // && userNotExpired()
+  return getUser()
 }
 
 export const user = () => {
@@ -49,27 +50,15 @@ export const getUser = () => {
   // }
 
   if (localStorage.getItem(KEY_USER) && localStorage.getItem(KEY_USER) !== null) {
-    return localStorage.getItem(KEY_USER)
+    return JSON.parse(localStorage.getItem(KEY_USER))
   }
 
   destroyUserToken()
-  return {
-    // _id: '',
-    token: ''
-    // createdAt: ''
-  }
+  return 'false'
 }
 
 export const storeUserToken = (userData) => {
-  const user = {
-    _id: userData._id,
-    token: userData.token,
-    username: userData.username,
-    email: userData.email,
-    createdAt: new Date()
-  }
-
-  localStorage.setItem(KEY_USER, JSON.stringify(user))
+  localStorage.setItem(KEY_USER, JSON.stringify(userData))
 }
 
 export const destroyUserToken = () => {

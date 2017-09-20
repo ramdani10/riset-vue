@@ -25,6 +25,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: load('auth/Login')
+    },
+    {
+      path: '/worker/index',
+      name: 'Worker Index',
+      component: load('worker/index')
     }
   ]
 })
