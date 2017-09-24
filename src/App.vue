@@ -3,15 +3,18 @@
     <!-- top Menu -->
     <header class="row">
       <div class="col-md-4 col-xs-2">
-        <h1>Clean & GO</h1>
+        <h1>Clean & GO </h1>
       </div>
       <div class="col-md-8 col-xs-4" align-v="end">
         <b-nav>
           <b-nav-item active><router-link to="/">Home</router-link></b-nav-item>
           <b-nav-item><router-link to="/worker/index">Worker</router-link></b-nav-item>
-          <b-nav-item-dropdown id="nav7_ddown" text="Login/Sign Up" right>
+          <b-nav-item-dropdown id="nav7_ddown" text="Login/Sign Up" right v-if="!currentUser">
             <b-dropdown-item><router-link to="/login">Log In</router-link></b-dropdown-item>
             <b-dropdown-item><router-link to="/register">Sign Up</router-link></b-dropdown-item>
+          </b-nav-item-dropdown>
+          <b-nav-item-dropdown id="nav7_ddown" :text="currentUser.first_name +' '+currentUser.last_name" right v-if="currentUser">
+            <b-dropdown-item @click="authLogout()"> Log Out </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-nav>
       </div>
@@ -53,8 +56,23 @@
 </template>
 
 <script>
+/* eslint-disable */
+
+import { mapGetters,mapActions  } from 'vuex'
+
 export default {
-  name: 'app'
+  name: 'app',
+  created(){
+    this.checkAutenticated()
+  },
+  methods: {
+      ...mapActions(['checkAutenticated','authLogout'])
+    },
+  computed: {
+    ...mapGetters({
+      currentUser: 'getAuthenticated'
+    })
+  }
 }
 </script>
 

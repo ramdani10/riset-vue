@@ -54,7 +54,7 @@ export const getUser = () => {
   }
 
   destroyUserToken()
-  return 'false'
+  return false
 }
 
 export const storeUserToken = (userData) => {

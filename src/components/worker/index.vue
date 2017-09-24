@@ -1,127 +1,21 @@
 <template>
   <div class="container">
-    <div id="products" class="row list-group">
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
+    <div id="products" class="row group-item" >
+        <div class="item col col-4 grid-group-item" v-for="p in dataWorkers">
             <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
+                <img class="img-responsive" v-bind:src= "p.image" alt="">
                 <div class="caption">
                     <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
+                        {{ p.first_name+' '+p.last_name }}</h4>
                     <p class="group inner list-group-item-text">
                         Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
                         sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
                     <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
+                        <div class="col-md-6">
+                            <p class="lead">$.{{ p.price }}</p>
                         </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
-                    <p class="group inner list-group-item-text">
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
-                    <p class="group inner list-group-item-text">
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
-                    <p class="group inner list-group-item-text">
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
-                    <p class="group inner list-group-item-text">
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="item  col-xs-4 col-lg-4 grid-group-item">
-            <div class="thumbnail">
-                <img class="group list-group-image" src="https://placehold.it/400x250/000/fff" alt="">
-                <div class="caption">
-                    <h4 class="group inner list-group-item-heading">
-                        Product title</h4>
-                    <p class="group inner list-group-item-text">
-                        Product description... Lorem ipsum dolor sit amet, consectetuer adipiscing elit,
-                        sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat.</p>
-                    <div class="row">
-                        <div class="col-xs-12 col-md-6">
-                            <p class="lead">
-                                $21.000</p>
-                        </div>
-                        <div class="col-xs-12 col-md-6">
-                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Add to cart</a>
+                        <div class="col-md-6">
+                            <a class="btn btn-success" href="http://www.jquery2dotnet.com">Order</a>
                         </div>
                     </div>
                 </div>
@@ -133,11 +27,30 @@
 </template>
 
 <script>
-/* eslint-disable*/
+/* eslint-disable */
 
+import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'worker-index',
-  
+  data(){
+    return {
+      loading: false,
+    }
+  },
+  created(){
+    this.getWorkers()
+  },
+  destroyed(){
+    // if (this.subscribed) store.dispatch('unsubscribeFromFruits')
+  },
+  methods: {
+      ...mapActions(['getWorkers'])
+  },
+  computed: {
+    ...mapGetters({
+      dataWorkers: 'getListWorker'
+    })
+  }
 }
 </script>
 
@@ -199,6 +112,13 @@ export default {
 .list-group-item-text
 {
     margin: 0 0 11px;
+}
+
+.img-responsive{
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 0 auto;
 }
 
 

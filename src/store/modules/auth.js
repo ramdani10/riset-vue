@@ -6,12 +6,13 @@ import apolloClient from '../../apollo/index.js'
 import router from '../../router'
 import gql from 'graphql-tag'
 import { ApiHttp } from './../../helpers/http_services'
-import { authenticated, storeUserToken } from './../../helpers/auth_services'
+import { authenticated, storeUserToken, destroyUserToken } from './../../helpers/auth_services'
 
 // Vue.use(Vuex);
 // Vue.use(Toasted)
   const state = {
-    register: {}
+    register: {},
+    currentUser: {}
   }
 
  const mutations = {
@@ -22,9 +23,9 @@ import { authenticated, storeUserToken } from './../../helpers/auth_services'
     ADD_USERS(state, fruit){
       Vue.set(state.fruits, fruit.id, fruit);
     },
-    CHECK_AUTHENTICATED(state, user)
+    SET_AUTHENTICATED(state, user)
     {
-      state.token = user.token
+      state.currentUser = user
     }
   }
 
@@ -43,8 +44,9 @@ import { authenticated, storeUserToken } from './../../helpers/auth_services'
         commit('GET_USERS', result);
       });
     },
-    checkAutenticated() {
+    checkAutenticated({commit}) {
       console.log(authenticated())
+      commit('SET_AUTHENTICATED', authenticated());
     },
     addUser({commit}, data) {
       this.register = data
@@ -89,6 +91,7 @@ import { authenticated, storeUserToken } from './../../helpers/auth_services'
         console.log(response)
         storeUserToken(response.data);
         router.push('/')
+        commit('SET_AUTHENTICATED', authenticated());
         dispatch('showToash',{message: 'Register has been successfuly, Please login with your account',type: 'success'})
       })
       .catch((error) => {
@@ -101,6 +104,11 @@ import { authenticated, storeUserToken } from './../../helpers/auth_services'
         }
         dispatch('showToash',{message: message,type: 'error'})
       })
+    },
+    authLogout ({ commit }, payload) {
+      destroyUserToken()
+      commit('SET_AUTHENTICATED', authenticated());
+      router.push('/login')
     },
     signUp({commit, dispatch}, data) {
       ApiHttp.post(`/auth/signup`,
@@ -125,8 +133,13 @@ import { authenticated, storeUserToken } from './../../helpers/auth_services'
     }
   }
 
+  const getters = {
+    getAuthenticated: state => state.currentUser
+  }
+
 export default {
   state,
   mutations,
-  actions
+  actions,
+  getters
 }

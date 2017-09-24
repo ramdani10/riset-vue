@@ -1,20 +1,15 @@
+/* eslint-disable */
 import Vue from 'vue'
 import Vuex from 'vuex'
 import * as actions from './actions'
-import auth from './modules/auth'
 import apolloClient from '../apollo/index.js'
 import gql from 'graphql-tag'
-// import openwrite from './modules/openwrite'
-// import page from './modules/page'
-// import organization from './modules/organization'
-// import books from './modules/books'
-// import eplatform from './modules/eplatform'
-// import media from './modules/media'
-import toashManager from './modules/toast_manager'
-// import createLogger from '../plugins/logger'
-// import shared from './modules/shared'
 
-// import writes from './modules/writes'
+import toashManager from './modules/toast_manager'
+import auth from './modules/auth'
+import worker from './modules/worker'
+
+
 
 Vue.use(Vuex)
 
@@ -24,7 +19,8 @@ export default new Vuex.Store({
   gql,
   modules: {
     auth,
-    toashManager
+    toashManager,
+    worker
     // books,
     // eplatform,
     // page,
